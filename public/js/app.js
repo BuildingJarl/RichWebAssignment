@@ -1,15 +1,18 @@
-var app = angular.module("Seed", []);
+var app = angular.module("WikiInvaders", ['ui.router']);
 
-app.config([ '$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-	$routeProvider.
-	when('/', {
-		templateUrl: 'partials/template',
-		controller: 'SeedController'
-	}).
-	otherwise({
-		redirectTo: '/'
-	});
-	$locationProvider.html5Mode(true);
+app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+	
+	$urlRouterProvider.otherwise("/login");
+
+	$stateProvider
+		.state('login', {
+			url: '/login',
+			templateUrl: "partials/login"
+		})
+		.state('profile', {
+			url: '/profile',
+			templateUrl: "partials/profile"
+		});
 }]);
 
 

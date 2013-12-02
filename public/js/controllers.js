@@ -1,5 +1,3 @@
-
-
-app.controller('SeedController', ['$scope', function($scope) {
+app.controller('appCtrl', ['$scope', function($scope) {
 
 }]);

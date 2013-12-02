@@ -7,6 +7,14 @@
   },
   "dependencies": {
     "express": "x",
-    "jade": "0.x"
+    "jade": "0.x",
+    "socket.io": "*",
+    "mocha": "~1.13.0",
+    "chai": "~1.8.1",
+    "superagent": "~0.15.5",
+    "passport": "*",
+    "passport-facebook": "*",
+    "mongoskin": "~0.6.0"
   }
 }
+
