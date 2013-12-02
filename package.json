@@ -1,0 +1,12 @@
+{
+  "name": "MySeed",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "x",
+    "jade": "0.x"
+  }
+}

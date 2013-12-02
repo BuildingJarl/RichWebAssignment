@@ -1,0 +1,14 @@
+html {
+	font-size: 1em;
+	font-family: Monaco, Consolas, "Lucida Console", monospace;
+	color: white;
+	background-color: #272822;
+}
+
+.PartialsContainer {
+
+	border-color: white;
+	border-radius: 50px;
+	border-style: solid;
+	padding: 20px;
+}
