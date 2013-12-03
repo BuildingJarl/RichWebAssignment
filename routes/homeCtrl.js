@@ -1,7 +1,7 @@
 module.exports.controller = function(app){
 
-	app.get('/partials/profile', ensureAuthenticated ,function (request, response) {
-		response.render("partials/profile");
+	app.get('/partials/home' ,isAuthenticated,function (request, response) {
+		response.render("partials/home");
 	});
 
 	// Simple route middleware to ensure user is authenticated.
@@ -9,9 +9,13 @@ module.exports.controller = function(app){
 	// the request is authenticated (typically via a persistent login session),
 	// the request will proceed. Otherwise, the user will be redirected to the
 	// login page.
-	function ensureAuthenticated(req, res, next) {
-	  if (req.isAuthenticated()) { return next(); }
-	  res.redirect('/')
+	function isAuthenticated(req, res, next) {
+	  console.log(req.user);
+	  if (req.user) { 
+	  	return next(); 
+	  }
+	  res.redirect('/partials/login');
+	  //res.send("hello")
 	}
 };
 

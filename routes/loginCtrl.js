@@ -5,7 +5,7 @@ module.exports.controller = function(app){
 	});
 
 	app.get('/logout', function (req,res) {
-		console.log("logout");
+
 		req.logout();
 		res.redirect('/');
 	});

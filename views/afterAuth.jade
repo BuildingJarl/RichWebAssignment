@@ -1,0 +1,16 @@
+!!!
+html
+	head
+		meta(charset='utf8')
+	body
+		script.
+			if(window.opener) {
+				window.opener.focus();
+
+				var state = "#{state}";
+				var user = "#{ user }";
+				if(window.opener.app && window.opener.app.authState) {
+					window.opener.app.authState(state, user);
+				}
+			}
+			window.close();

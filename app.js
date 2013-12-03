@@ -17,12 +17,30 @@ var db = require('mongoskin').db('localhost:27017/WikiInvaders', {safe:true});
 // To support persistent login sessions, Passport needs to be able to
 // serialize users into and deserialize users out of the session.
 passport.serializeUser(function(user, done) {
-  done(null, user);
+  console.log("serialize " + user._id);
+  done(null, user._id);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function(id, done) {
+	/*
+	db.collection('data').findOne({ _id:id }, function(err,user) {
+		if(err) {
+			done(err);
+		}
+	*/
+	console.log("Deserialize " + id);
+		//console.log(user);
+		//done(err,user);
+	done(null, id);
+	//});
 });
+
+//Temp model
+function User(fbid) {
+	this.facebookId = fbid,
+	this.createdAt = Date.now();
+};
+
 
 passport.use(new FacebookStrategy ({
 	clientID: FACEBOOK_APP_ID,
@@ -30,24 +48,26 @@ passport.use(new FacebookStrategy ({
 	callbackURL:"http://localhost:3000/auth/facebook/callback" //must be on same host
 	},
 	function(accessToken, refreshToken, profile, done) {
-
-		var user = {};
-		user.authID = profile.id;
-
 		//Refactor this
-		db.collection('data').findOne({authID:profile.id}, function(err,result)	{
-			if(err) throw err;
-			if(result) {
-				console.log("Users exists");
-			} else {
-				db.collection('data').insert(user,function(err,res) {
-					if(err) throw err;
-					if(res) {
-						console.log("User Added to MongoDB");
-					} 
-				});
+		db.collection('data').findOne({ facebookId:profile.id }, function(err,user)	{
+			if(err) {
+				return done(err);
 			}
-			return done(null,user);
+			if(!user) {
+				user = new User(profile.id);
+
+				db.collection('data').insert(user,function(err) {
+					if(err) {
+						throw err
+					};
+
+					console.log("User Added to MongoDB");
+					return done(err, user);
+				});
+			} else {
+				console.log("Users exists");
+				return done(err,user)
+			}
 		});
 	}
 ));
