@@ -1,17 +1,39 @@
-var app = angular.module("WikiInvaders", ['ui.router']);
+var app = angular.module("WikiInvaders", ['ui.bootstrap','ui.router']);
 
-app.run(['$rootScope', '$window', 'sessionService', function ($rootScope, $window,sessionService) {
+app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+	
+	$urlRouterProvider.otherwise('/');
+
+	$stateProvider
+		.state('login', {
+			url: '/',
+			templateUrl:'/partials/login',
+			controller: function($scope) {
+
+				}
+			})
+		.state('home', {
+			url: '/home',
+			templateUrl: "/partials/home",
+			controller: function($scope,sessionService) {
+					$scope.hello = "helloworld";
+					$scope.user = sessionService.currentUser;
+					console.log($scope.user);
+				} 
+			});	
+}]);
+
+
+app.run(['$rootScope', '$window', '$location' ,'sessionService', function ($rootScope, $window, $location,sessionService) {
 	$rootScope.session = sessionService;
 	$window.app = {
 		authState: function(state, user) {
-			console.log("auth state   " + state + " " + user);
-
 			$rootScope.$apply(function() {
 				switch (state) {
 					case 'success' :
 						sessionService.authSuccess(user);
 						break;
-					case 'falure': 
+					case 'failure': 
 						sessionService.authFailed();
 						break;
 				}
@@ -21,35 +43,22 @@ app.run(['$rootScope', '$window', 'sessionService', function ($rootScope, $windo
 
 	if($window.user !== null) {
 		sessionService.authSuccess($window.user);
+		//console.log($window.user);
+		//$location.path("/home");
 	}
 
 	$rootScope.$on('session-changed', function() {
-		console.log("session Changed");
+		console.log("Session Changed");
+
+		if(sessionService.isLoggedIn) {
+			$location.path("/home");
+		} else {
+			$location.path("/");
+		}
 	})
 }]);
 
 
-app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-	
-	$urlRouterProvider.otherwise('/');
-
-	$stateProvider
-		.state('home', {
-			url: '/home:homeId',
-			templateUrl: "/partials/home",
-			controller: function($scope, $stateParams) {
-				$scope.homeId = $stateParams.homeId;
-				
-				} 
-			})
-		.state('login', {
-			url: '/',
-			templateUrl:'/partials/login',
-			controller: function($scope,$http, $window) {
-
-				}
-			});	
-}]);
 
 
 

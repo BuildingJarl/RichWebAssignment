@@ -10,6 +10,8 @@ var FACEBOOK_APP_ID = '370961736374758';
 var FACEBOOK_APP_SECRET = 'e18e2c6c81206afe6273890c99682747';
 var app = express();
 
+
+//put into seperate config files
 //setup mongoDB
 var db = require('mongoskin').db('localhost:27017/WikiInvaders', {safe:true});
 
@@ -22,7 +24,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-	/*
+	/* //If session is stored in a database
 	db.collection('data').findOne({ _id:id }, function(err,user) {
 		if(err) {
 			done(err);
@@ -36,9 +38,12 @@ passport.deserializeUser(function(id, done) {
 });
 
 //Temp model
-function User(fbid) {
-	this.facebookId = fbid,
+function User(fbid,uname,pid) {
+	this.facebookId = fbid;
 	this.createdAt = Date.now();
+	this.model = {model:"test"};
+	this.username = uname;
+	this.providerId = pid;
 };
 
 
@@ -48,14 +53,12 @@ passport.use(new FacebookStrategy ({
 	callbackURL:"http://localhost:3000/auth/facebook/callback" //must be on same host
 	},
 	function(accessToken, refreshToken, profile, done) {
-		//Refactor this
 		db.collection('data').findOne({ facebookId:profile.id }, function(err,user)	{
 			if(err) {
 				return done(err);
 			}
 			if(!user) {
-				user = new User(profile.id);
-
+				user = new User(profile.id, profile.username, profile.id);
 				db.collection('data').insert(user,function(err) {
 					if(err) {
 						throw err

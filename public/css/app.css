@@ -3,6 +3,12 @@ html {
 	font-family: Monaco, Consolas, "Lucida Console", monospace;
 	color: white;
 	background-color: #272822;
+
+}
+
+body {
+	padding:0;
+	margin:0;
 }
 
 .PartialsContainer {
@@ -11,4 +17,65 @@ html {
 	border-radius: 50px;
 	border-style: solid;
 	padding: 20px;
+}
+/* login */
+.loginButtons {
+	font-size: 1.5em;
+	width: 300px; 
+	height: 50px;
+	line-height: 50px; 
+	vertical-align: middle;
+}
+
+.loginButtonsContainer {
+	width:300px; 
+	margin-left:auto; 
+	margin-right:auto; 
+	margin-top:20%; 
+	text-align:center;
+}
+
+.loginButtonsTop {
+	background-color: red; 
+	border-radius: 20px 20px 0px 0px;
+	-moz-border-radius: 20px 20px 0px 0px;
+	-webkit-border-radius: 20px 20px 0px 0px;
+	border: 0px solid #000000;
+}
+.loginButtonsBottom {
+	background-color: blue; 
+	border-radius: 0px 0px 20px 20px;
+	-moz-border-radius: 0px 0px 20px 20px;
+	-webkit-border-radius: 0px 0px 20px 20px;
+	border: 0px solid #000000;
+}
+
+.loginButtonsTop:active {
+	background-color: grey;
+}
+.loginButtonsTop:hover {
+	background-color: #980000 ;
+}
+
+.loginButtonsBottom:active {
+	background-color: white;
+}
+.loginButtonsBottom:hover {
+	background-color: #880000 ;
+}
+
+/* */
+.homeContainer {
+	min-height: 500px;
+	width: 800px;
+	margin-top: 2%;
+	margin-left:auto;
+	margin-right: auto;
+	padding: 10px;
+	background-color: whitesmoke; 
+	border-radius: 20px 20px 20px 20px;
+	-moz-border-radius: 20px 20px 20px 20px;
+	-webkit-border-radius: 20px 20px 20px 20px;
+	border: 0px solid #000000;
+	color: #272822;
 }

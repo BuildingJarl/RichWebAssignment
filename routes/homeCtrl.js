@@ -10,12 +10,10 @@ module.exports.controller = function(app){
 	// the request will proceed. Otherwise, the user will be redirected to the
 	// login page.
 	function isAuthenticated(req, res, next) {
-	  console.log(req.user);
 	  if (req.user) { 
 	  	return next(); 
 	  }
 	  res.redirect('/partials/login');
-	  //res.send("hello")
 	}
 };
 

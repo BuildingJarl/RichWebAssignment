@@ -1,4 +1,20 @@
-|this is the profile page and will display kills and so on
+div(class="homeContainer")
+	
+	
 
-button(ng-click="session.logout()")
-	|logout
+	div(style="background-color:blue; height:50px; width:100%;")
+		div(style="float:left;")
+			{{hello}}
+		div(style="float:right;")
+			button(ng-click="session.logout()") logout
+	
+	div(style="background-color:red; height:400px; padding-top:10px;")
+		div(style="margin-left: 20px; float:left;")
+			| fighter container
+			div(style="border:solid;")
+				| fighter canvas
+
+		div(style="margin-right: 20px; float:right;")
+			| stats container
+			div(style="border:solid;")
+				| stats canvas

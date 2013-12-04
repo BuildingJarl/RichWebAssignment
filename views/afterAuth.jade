@@ -7,7 +7,7 @@ html
 			if(window.opener) {
 				window.opener.focus();
 
-				var state = "#{state}";
+				var state = "#{ state }";
 				var user = "#{ user }";
 				if(window.opener.app && window.opener.app.authState) {
 					window.opener.app.authState(state, user);

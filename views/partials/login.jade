@@ -1,9 +1,4 @@
-div
-	span
-		| LOGIN / SIGNUP
-		br
-		button( ng-click= "session.facebookLogin()" ) Login with Facebook
-		br
-		br
-	span
-		| TRY it Out
+div(class="loginButtonsContainer")
+	div(class="loginButtons loginButtonsTop" ng-click="session.facebookLogin()") Login with 
+			i(class="fa fa-facebook-square fa-2x")
+	div(class="loginButtons loginButtonsBottom") Nah, skip login!
