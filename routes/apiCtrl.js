@@ -1,11 +1,19 @@
-module.exports.controller = function(app){
 
-	app.get('/partials/home' ,isAuthenticated,function (request, response) {
-		response.render("partials/home");
-	});
 
-	app.get('/partials/go' ,function (request, response) {
-		response.render("partials/go");
+module.exports.controller = function(app,dependencies){
+
+	app.get('/api/getUser' ,isAuthenticated,function (request, response) {
+		
+		console.log(request.user);
+		dependencies.database.collection('data').findOne({ _id: new dependencies.BSON.ObjectID(request.user)}, function(err,user) {
+			if(err) {
+				console.log("error retriveing user from database");
+			}
+			delete user.facebookId;
+			delete user._id;
+			response.json(user);
+		})
+		
 	});
 
 	// Simple route middleware to ensure user is authenticated.
@@ -20,5 +28,3 @@ module.exports.controller = function(app){
 	  res.redirect('/partials/login');
 	}
 };
-
-

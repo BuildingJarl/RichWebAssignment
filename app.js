@@ -8,13 +8,16 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var FACEBOOK_APP_ID = '370961736374758';
 var FACEBOOK_APP_SECRET = 'e18e2c6c81206afe6273890c99682747';
+
 var app = express();
+var server = http.createServer(app)
+var io = require('socket.io').listen(server);
 
-
+/** Refactor This **/
 //put into seperate config files
 //setup mongoDB
 var db = require('mongoskin').db('localhost:27017/WikiInvaders', {safe:true});
-
+var BSON = require('mongoskin').BSONPure;
 // Passport session setup.
 // To support persistent login sessions, Passport needs to be able to
 // serialize users into and deserialize users out of the session.
@@ -23,6 +26,7 @@ passport.serializeUser(function(user, done) {
   done(null, user._id);
 });
 
+/** Refactor This **/
 passport.deserializeUser(function(id, done) {
 	/* //If session is stored in a database
 	db.collection('data').findOne({ _id:id }, function(err,user) {
@@ -37,16 +41,16 @@ passport.deserializeUser(function(id, done) {
 	//});
 });
 
-//Temp model
+/** Refactor This **/
 function User(fbid,uname,pid) {
 	this.facebookId = fbid;
 	this.createdAt = Date.now();
-	this.model = {model:"test"};
+	this.model = {name:"testModel"};
 	this.username = uname;
-	this.providerId = pid;
+	//insert stats
 };
 
-
+/** Refactor This **/
 passport.use(new FacebookStrategy ({
 	clientID: FACEBOOK_APP_ID,
 	clientSecret: FACEBOOK_APP_SECRET,
@@ -58,7 +62,7 @@ passport.use(new FacebookStrategy ({
 				return done(err);
 			}
 			if(!user) {
-				user = new User(profile.id, profile.username, profile.id);
+				user = new User(profile.id, profile.username);
 				db.collection('data').insert(user,function(err) {
 					if(err) {
 						throw err
@@ -92,7 +96,6 @@ app.configure(function() {
   	app.use(express.static(__dirname + '/public'));
 })
 
-
 /***  Development only ***/
 if ('development' === app.get('env')) {
     app.use(express.errorHandler());
@@ -102,12 +105,15 @@ if ('development' === app.get('env')) {
 fs.readdirSync('./routes').forEach(function (file) {
 	if(file.substr(-3) === '.js') {
 		route = require('./routes/' + file);
-		route.controller(app,passport); // dont know if this is good??
+		route.controller(app,{ passport:passport, database:db, BSON:BSON }); // dont know if this is good??
 	}
 });
 
+io.sockets.on('connection', function(socket) {
+	socket.emit('init', {hello: 'world'});
+})
 
-/***  Start Server on port: xxxx ***/
-http.createServer(app).listen(app.get('port'), function() {
-	console.log('Express server listending on port ' + app.get('port'));
+
+server.listen(app.get('port'), function() {
+	console.log("Server started on port " + app.get('port'));	
 });

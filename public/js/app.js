@@ -15,12 +15,13 @@ app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $
 		.state('home', {
 			url: '/home',
 			templateUrl: "/partials/home",
-			controller: function($scope,sessionService) {
-					$scope.hello = "helloworld";
-					$scope.user = sessionService.currentUser;
-					console.log($scope.user);
-				} 
-			});	
+			controller: 'homeController'
+		})
+		.state('Go', {
+			url:'/go',
+			templateUrl:"partials/go",
+			controller: "goController"
+		});	
 }]);
 
 
@@ -41,10 +42,9 @@ app.run(['$rootScope', '$window', '$location' ,'sessionService', function ($root
 		}
 	};
 
-	if($window.user !== null) {
+	if($window.user !== null && $window.user !== undefined) {
 		sessionService.authSuccess($window.user);
-		//console.log($window.user);
-		//$location.path("/home");
+		console.log($window.user);
 	}
 
 	$rootScope.$on('session-changed', function() {
