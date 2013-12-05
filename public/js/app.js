@@ -7,25 +7,21 @@ app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $
 	$stateProvider
 		.state('login', {
 			url: '/',
-			templateUrl:'/partials/login',
-			controller: function($scope) {
-
-				}
-			})
+			templateUrl:'/partials/login'
+		})
 		.state('home', {
 			url: '/home',
 			templateUrl: "/partials/home",
 			controller: 'homeController'
 		})
-		.state('Go', {
+		.state('go', {
 			url:'/go',
 			templateUrl:"partials/go",
 			controller: "goController"
 		});	
 }]);
 
-
-app.run(['$rootScope', '$window', '$location' ,'sessionService', function ($rootScope, $window, $location,sessionService) {
+app.run(['$rootScope', '$window', '$state' ,'sessionService', function ($rootScope, $window, $state,sessionService) {
 	$rootScope.session = sessionService;
 	$window.app = {
 		authState: function(state, user) {
@@ -48,12 +44,10 @@ app.run(['$rootScope', '$window', '$location' ,'sessionService', function ($root
 	}
 
 	$rootScope.$on('session-changed', function() {
-		console.log("Session Changed");
-
 		if(sessionService.isLoggedIn) {
-			$location.path("/home");
+			$state.go('home'); 
 		} else {
-			$location.path("/");
+			$state.go('login');
 		}
 	})
 }]);

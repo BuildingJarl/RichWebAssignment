@@ -24,7 +24,7 @@ app.controller('homeController', ['$scope','$http', '$location', function($scope
 
 }]);
 
-app.controller('goController', ['$scope','$http', '$rootScope', function($scope, $http, $rootScope) {
+app.controller('goController', ['$scope','socket', '$rootScope', function($scope, socket, $rootScope) {
 	console.log("Session " + $rootScope.session.currentUser);
 
 	// user is logged in and present in rootScope#
@@ -36,9 +36,7 @@ app.controller('goController', ['$scope','$http', '$rootScope', function($scope,
 	
 
 	var ive = new IVE(window.innerWidth, window.innerHeight, document.getElementById('ThreeJSGo'));
-	ive.addOrbitControlsToCamera();
 	var of = new ObjectFactory();
-	ive.addObjectToScene(of.cube(0,0,0));
 
 	function loop() {
 		ive.update();
@@ -51,5 +49,15 @@ app.controller('goController', ['$scope','$http', '$rootScope', function($scope,
   		ive.resetSize(window.innerWidth,window.innerHeight);
   		console.log("resized to: " + window.innerWidth + " / "+ window.innerHeight);
 	});
+
+	//--- Socket Calls
+	socket.on('init', function(data){
+		console.log(data.x);
+		ive.addObjectToScene(of.cube(data.x,data.y,data.z));
+	});
+	//http://stackoverflow.com/questions/14389049/how-to-use-angularjs-with-socket-io
+	$scope.$on('$destroy', function (event) {
+        socket.removeAllListeners();
+    });	
 
 }]);
