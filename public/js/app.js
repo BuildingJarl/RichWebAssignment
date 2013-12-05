@@ -40,7 +40,6 @@ app.run(['$rootScope', '$window', '$state' ,'sessionService', function ($rootSco
 
 	if($window.user !== null && $window.user !== undefined) {
 		sessionService.authSuccess($window.user);
-		console.log($window.user);
 	}
 
 	$rootScope.$on('session-changed', function() {

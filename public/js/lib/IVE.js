@@ -23,7 +23,7 @@ function IVE(width,height,container) {
  
     // Create a light, set its position, and add it to the scene.
     var light = new THREE.PointLight(0xffffff);
-    light.position.set(0,0,500);
+   	light.position.set(0,200,100);
     this.scene.add(light);
 	//this.scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
 
@@ -66,80 +66,19 @@ IVE.prototype.resetSize = function (width,height) {
   	this.renderer.setSize(this.WIDTH, this.HEIGHT);
   	this.camera.aspect = this.WIDTH / this.HEIGHT;
   	this.camera.updateProjectionMatrix();
-} 
-
-//--------------------------------------------------------------------------
-
-function ObjectFactory() {
-
 };
 
-ObjectFactory.prototype.cube = function(x,y,z) {
-
-	var cube = new THREE.Mesh( new THREE.CubeGeometry( 50, 50, 50 ), new THREE.MeshNormalMaterial() );
-	cube.position.x = x;
-	cube.position.y = y;
-	cube.position.z = z;
-
-	cube.update = function(){
-
-		cube.rotation.x += 0.01;
-		cube.rotation.y += 0.01;
-	};
-
-	return cube;
+IVE.prototype.addModelToScene = function(name) {
+	var loader = new THREE.JSONLoader(true);
+	var self = this;
+	var mesh;
+	var path = "../../models/" + name + ".js";
+	loader.load(path, function(geometry, materials) {
+			var material = new THREE.MeshFaceMaterial(materials);
+			mesh = new THREE.Mesh(geometry, material);
+			mesh.position.set(0,0,0);
+			mesh.scale.set(20,20,20);
+			self.scene.add(mesh);
+		}
+	);
 };
-
-ObjectFactory.prototype.createObjectsFromData = function(x,y,z,text) {
-
-	var can = document.createElement("canvas");
-	var context = can.getContext("2d");
-	var xxx = can.width / 2;
-	var yyy = can.height / 2;
-	context.font = "30pt Calibri";
-	context.textAlign = "center";
-	context.fillStyle = "grey";
-	context.fillRect(0,0,300,200);
-	context.fillStyle = "blue";
-	context.fillText(text,xxx,yyy-30);
-
-	var texture = new THREE.Texture(can);
-	texture.needsUpdate = true;
-
-	var cubeMaterialArray = [];
-	// order to add materials: x+,x-,y+,y-,z+,z-
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xff3333 } ) );
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xff8800 } ) );
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0xffff33 } ) );
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x33ff33 } ) );
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { map:texture } ) );
-	cubeMaterialArray.push( new THREE.MeshBasicMaterial( { color: 0x8833ff } ) );
-
-	var cubeMaterials = new THREE.MeshFaceMaterial( cubeMaterialArray );
-
-	var cube = new THREE.Mesh( new THREE.CubeGeometry( 50, 50, 20 ), cubeMaterials );
-	cube.position.x = x;
-	cube.position.y = y;
-	cube.position.z = z;
-
-	cube.update = function(){
-
-		cube.rotation.x += 0.01;
-		cube.rotation.y += 0.01;
-	};
-
-	console.log(text + " added to Scene")
-	return cube;
-};
-
-/*
-	ToDO pass in each "file" and let the object factory create various elemts for the file
-	e.g.
-		one box for the overall file with name
-		another for each function in the file
-		another for each var
-		another for each object
-		another for each function declaration
-		...
-*/
-
