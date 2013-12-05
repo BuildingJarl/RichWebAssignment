@@ -1,4 +1,3 @@
-AngExpSeed
-==========
+This is my repo for the rich web assignment
 
-Seed for AnjularJS and ExpressJS
+Due data 16th dec 2013, demo 13 dec 2013
