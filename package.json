@@ -2,16 +2,15 @@
   "name": "MySeed",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "node app.js"
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BuildingJarl/FYP.git"
   },
   "dependencies": {
     "express": "x",
     "jade": "0.x",
     "socket.io": "*",
-    "mocha": "~1.13.0",
-    "chai": "~1.8.1",
-    "superagent": "~0.15.5",
     "passport": "*",
     "passport-facebook": "*",
     "mongoskin": "~0.6.0"

@@ -34,12 +34,12 @@ function IVE(width,height,container) {
 	console.log("Camera Added to Scene");
 
 	//stats setup
-	this.stats = new Stats();
-	this.stats.domElement.style.position = 'absolute';
-	this.stats.domElement.style.zindex = 1;
-	this.stats.domElement.style.top = '0px';
-	container.appendChild( this.stats.domElement );
-	console.log("Stats running");
+	//this.stats = new Stats();
+	//this.stats.domElement.style.position = 'absolute';
+	//this.stats.domElement.style.zindex = 1;
+	//this.stats.domElement.style.top = '0px';
+	//container.appendChild( this.stats.domElement );
+	//console.log("Stats running");
 };
 
 IVE.prototype.addOrbitControlsToCamera = function() {
@@ -47,7 +47,7 @@ IVE.prototype.addOrbitControlsToCamera = function() {
 }
 
 IVE.prototype.update = function () {
-	this.stats.update();
+	//this.stats.update();
 	this.draw();
 };
 
@@ -81,4 +81,5 @@ IVE.prototype.addModelToScene = function(name) {
 			self.scene.add(mesh);
 		}
 	);
+	console.log("model added to scene");
 };
