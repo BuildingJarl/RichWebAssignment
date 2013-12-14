@@ -11,13 +11,37 @@ body {
 	margin:0;
 }
 
-.PartialsContainer {
-
-	border-color: white;
-	border-radius: 50px;
-	border-style: solid;
-	padding: 20px;
+.topbar {
+	width:100%;
+	height: 30px;
+	background-color: blue;
 }
+
+.horizonalList {
+	padding:0;
+	margin: 0;
+	list-style: none;
+}
+
+.horizonalList li {
+	display: inline;
+	margin-left: 20px;
+}
+
+.horizonalList li a {
+	width:100%;
+	height: 100%;
+	text-decoration: none;
+	color:white;
+}
+
+.topbarItemsContainer {
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
 /* login */
 .loginButtons {
 	font-size: 1.5em;
@@ -54,38 +78,12 @@ body {
 	background-color: grey;
 }
 .loginButtonsTop:hover {
-	background-color: #980000 ;
+	background-color: #980000;
 }
 
 .loginButtonsBottom:active {
 	background-color: white;
 }
 .loginButtonsBottom:hover {
-	background-color: #880000 ;
-}
-
-/* */
-.homeContainer {
-	min-height: 500px;
-	width: 800px;
-	margin-top: 2%;
-	margin-left:auto;
-	margin-right: auto;
-	padding: 10px;
-	background-color: whitesmoke; 
-	border-radius: 20px 20px 20px 20px;
-	-moz-border-radius: 20px 20px 20px 20px;
-	-webkit-border-radius: 20px 20px 20px 20px;
-	border: 0px solid #000000;
-	color: #272822;
-}
-
-#ThreeJS {
-	height:300px; 
-	width:325px;
-}
-
-#ThreeJSGo {
-	height:100%;
-	width:100%;
+	background-color: #880000;
 }

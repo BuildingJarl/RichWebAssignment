@@ -3,13 +3,12 @@ module.exports = function (io) {
 	var objects = [];
 	var playerId= 1;
 
-	io.sockets.on('connection', function(socket) {
+	io.sockets.on('connection', function(client) {
 
-		console.log("New Player has connected");
-		socket.emit('initialise', {x:2});
+		console.log("New Client has connected");
 
-		socket.on('playerDis', function() {
-			socket.disconnect();
+		client.on('message', function(data) {
+			console.log(data);
 		})
 	});
 }

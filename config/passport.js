@@ -10,11 +10,11 @@ module.exports = function (passport, db, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET) {
 	*/
 
 	passport.serializeUser(function(user, done) {
-	  done(null, user._id);
+	  	done(null, user._id);
 	});
 
-	passport.deserializeUser(function(id, done) {
-		done(null, id);
+	passport.deserializeUser(function(user, done) {
+		done(null, user);
 	});
 
 	passport.use(new FacebookStrategy ({
@@ -23,22 +23,19 @@ module.exports = function (passport, db, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET) {
 		callbackURL:"http://localhost:3000/auth/facebook/callback" //must be on same host
 		},
 		function(accessToken, refreshToken, profile, done) {
-			db.collection('data').findOne({ facebookId:profile.id }, function(err,user)	{
+			db.collection('Users').findOne({ facebookId:profile.id }, function(err,user)	{
 				if(err) {
 					return done(err);
 				}
 				if(!user) {
 					user = new User(profile.id, profile.username);
-					db.collection('data').insert(user,function(err) {
+					db.collection('Users').insert(user,function(err) {
 						if(err) {
 							throw err
 						};
-
-						console.log("User Added to MongoDB");
 						return done(err, user);
 					});
 				} else {
-					console.log("Users exists");
 					return done(err,user)
 				}
 			});

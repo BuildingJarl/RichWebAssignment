@@ -26,7 +26,6 @@ app.factory('sessionService', ['$rootScope', '$window', '$http',
 				});
 			},
 			authSuccess: function(userData) {
-				console.log("authSuccess called");
 				this.currentUser = userData;
 				this.isLoggedIn = true;
 				$rootScope.$emit('session-changed');

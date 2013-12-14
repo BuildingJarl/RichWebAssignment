@@ -1,31 +1,36 @@
-var app = angular.module("WikiInvaders", ['ui.bootstrap','ui.router']);
+var app = angular.module("Pollnoid", ['ui.bootstrap','ui.router']);
 
 app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 	
 	$urlRouterProvider.otherwise('/');
 
 	$stateProvider
+		.state('index', {
+			url:'/',
+			templateUrl:'partials/index'
+		})
 		.state('login', {
-			url: '/',
+			url: '/login',
 			templateUrl:'/partials/login'
 		})
-		.state('home', {
-			url: '/home',
-			templateUrl: "/partials/home",
-			controller: 'homeController'
-		})
-		.state('go', {
-			url:'/go',
-			templateUrl:"partials/go",
-			controller: "goController"
-		});	
+		.state('signup', {
+			url:'/login',
+			templateUrl:'/partials/login'
+		});
 }]);
 
-app.run(['$rootScope', '$window', '$state' ,'sessionService', function ($rootScope, $window, $state,sessionService) {
+
+
+
+
+app.run(['$rootScope', '$window','sessionService', function ($rootScope, $window,sessionService) {
 	$rootScope.session = sessionService;
+
 	$window.app = {
 		authState: function(state, user) {
+
 			$rootScope.$apply(function() {
+
 				switch (state) {
 					case 'success' :
 						sessionService.authSuccess(user);
@@ -37,18 +42,6 @@ app.run(['$rootScope', '$window', '$state' ,'sessionService', function ($rootSco
 			});
 		}
 	};
-
-	if($window.user !== null && $window.user !== undefined) {
-		sessionService.authSuccess($window.user);
-	}
-
-	$rootScope.$on('session-changed', function() {
-		if(sessionService.isLoggedIn) {
-			$state.go('home'); 
-		} else {
-			$state.go('login');
-		}
-	})
 }]);
 
 

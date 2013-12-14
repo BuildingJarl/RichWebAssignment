@@ -1,6 +1,18 @@
 extends layout
 
 block body
+	div.topbar
+		div.topbarItemsContainer
+			div(style="float:left;")
+				a(ui-sref='index',href="#/") Pollnoid
+			div(style="float:right;")
+				ul.horizonalList
+					li 
+						a(ui-sref='login') sign up
+					li 
+						a(ui-sref='login') log in
+					li
+						{{ session.currentUser }}
 
 	div(ui-view)
 
