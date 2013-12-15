@@ -1,8 +1,17 @@
+'use strict';
 
-function User(fbid,uname,pid) {
-	this.facebookId = fbid;
-	this.createdAt = Date.now();
-	this.username = uname;
-};
+var User = (function() {
+
+	//constructor
+	function User(fbid,uname) {
+		this.facebookId = fbid;
+		this.createdAt = Date.now();
+		this.username = uname;
+		this.votesCast = [];
+		this.polledViewed = [];
+	};
+
+	return User;
+})();
 
 module.exports = User;

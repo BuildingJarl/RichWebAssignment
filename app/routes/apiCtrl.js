@@ -1,6 +1,6 @@
 var BSON = require('mongoskin').BSONPure;
 
-module.exports.controller = function(app,db){
+module.exports.controller = function (app,db) {
 
 	//get initial view (index.jade)
 	app.get('/', function (request, response) {
@@ -15,9 +15,19 @@ module.exports.controller = function(app,db){
 	app.get('/partials/login', function (request, response) {
 		response.render("partials/login");
 	});
-	app.get('/partials/chat' ,function (request, response) {
+	app.get('/partials/chat' , function (request, response) {
 		response.render("partials/chat");
 	});
+	app.get('/partials/create', function (request, response) {
+		response.render("partials/create");
+	});
+	app.get('/partials/polls', function (request, response) {
+		response.render("partials/polls");
+	});
+	app.get('/partials/poll', function (request, response) {
+		response.render("partials/poll");
+	});
+
 
 	app.get('/api/getUser' ,isAuthenticated,function (request, response) {
 		db.database.collection('data').findOne({ _id: new BSON.ObjectID(request.user)}, function(err,user) {
@@ -30,19 +40,51 @@ module.exports.controller = function(app,db){
 		});
 	});
 
+	//Create a poll
+	app.post('/api/createPoll', function (request,response) {
 
-	//get newest questions
+		var options = {};
+		for(op in request.body.options) {
+			options[request.body.options[op]] = 0;
+		}
+		//to do creat model for this
+		var poll = {
+			title: request.body.title,
+			info: request.body.info,
+			options: options,
+			views: 0,
+			votes: 0,
+			dateCreated = Date.now();
+		} 
 
-	//get single question
+		db.collection('polls').insert(poll, function (err, result) {
+			if(err){
+				throw err;
+			}
+			if(result) {
+				response.send(result[0]._id);
+			}
+		});
+	});
 
-	//update data on question
+	//get newest 10 polls -> currently only gets first 10 in DB
+	app.get('/api/getIndexPolls', function (request,response) {
 
+		db.collection('polls').find().limit(10).toArray(function(err, result) {
+			if(err){
+				throw err;
+			}
+			if(result) {
+				response.send(result);
+			}
+		});
+	});
 
 	// Simple route middleware to ensure user is authenticated.
 	function isAuthenticated(req, res, next) {
 	  if (req.user) { 
 	  	return next(); 
 	  }
-	  res.redirect('/partials/login');
+	  res.json({status:"you are not logged in"});
 	}
 };

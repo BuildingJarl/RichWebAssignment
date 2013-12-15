@@ -1,0 +1,25 @@
+input(placeholder="Whats your polls title?" ng-model="poll.title" type="text" size="60")
+br
+textarea(placeholder="Enter some details about the poll" ng-model="poll.info" rows="6" cols="50")
+br
+|Options : 
+input(ng-model="optionInput")
+button(ng-click="addOption()") Add
+
+ul
+	li(ng-repeat="option in poll.options" )
+		span(style="width:150px; display:inline-block;")
+			{{ option }}
+		i(class="fa fa-eraser" style="cursor:pointer;" ng-click="removeOption($index)")
+
+| Preview
+div(style="border:1px dotted white;")
+	h1 {{ poll.title }}
+	{{ poll.info }}
+	br
+	br
+	button(ng-repeat="option in poll.options") {{ option }}
+
+
+
+button(ng-click="createPoll()") Create Poll

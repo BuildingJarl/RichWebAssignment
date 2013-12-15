@@ -6,14 +6,30 @@ block body
 			div(style="float:left;")
 				a(ui-sref='index',href="#/") Pollnoid
 			div(style="float:right;")
-				ul.horizonalList
+				ul.horizonalList(ng-hide="session.isLoggedIn")
 					li 
 						a(ui-sref='login') sign up
 					li 
 						a(ui-sref='login') log in
+				ul.horizonalList(ng-show="session.isLoggedIn")
 					li
 						{{ session.currentUser }}
+					li
+						a(ui-sref='login' ng-click="session.logout()") log out
 
-	div(ui-view)
+	div.menubarContainer
+		div(style="float:left;")
+			a(ui-sref='index') Pollnoid
+		div
+			ul.horizonalList
+				li 
+					a(ui-sref='polls') Polls
+				li 
+					a(ui-sref='create') Create Poll
+
+
+
+
+	div(ui-view class="uiViewContainer")
 
 

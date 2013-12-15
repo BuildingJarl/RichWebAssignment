@@ -41,36 +41,64 @@ body {
 	margin-left: auto;
 }
 
-
-/* login */
-.loginButtons {
-	font-size: 1.5em;
-	width: 300px; 
-	height: 50px;
-	line-height: 50px; 
-	vertical-align: middle;
+.menubarContainer {
+	width: 900px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
 }
 
+.uiViewContainer {
+	width:900px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+.pollsContainer {
+	width:600px;
+	height: 100px;
+	overflow: hidden;
+	margin-bottom: 50px;
+}
+
+
+
+
+
+
+
+
+
+
 .loginButtonsContainer {
-	width:300px; 
+	width:600px; 
 	margin-left:auto; 
 	margin-right:auto; 
 	margin-top:20%; 
 	text-align:center;
 }
 
+
+/* login */
+.loginButtons {
+	font-size: 1.5em;
+	width: 250px; 
+	height: 200px;
+	line-height: 100px; 
+	vertical-align: middle;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+
+
 .loginButtonsTop {
 	background-color: red; 
-	border-radius: 20px 20px 0px 0px;
-	-moz-border-radius: 20px 20px 0px 0px;
-	-webkit-border-radius: 20px 20px 0px 0px;
-	border: 0px solid #000000;
-}
-.loginButtonsBottom {
-	background-color: blue; 
-	border-radius: 0px 0px 20px 20px;
-	-moz-border-radius: 0px 0px 20px 20px;
-	-webkit-border-radius: 0px 0px 20px 20px;
+	border-radius: 20px 20px 20px 20px;
+	-moz-border-radius: 20px 20px 20px 20px;
+	-webkit-border-radius: 20px 20px 20px 20px;
 	border: 0px solid #000000;
 }
 
@@ -79,11 +107,4 @@ body {
 }
 .loginButtonsTop:hover {
 	background-color: #980000;
-}
-
-.loginButtonsBottom:active {
-	background-color: white;
-}
-.loginButtonsBottom:hover {
-	background-color: #880000;
 }
