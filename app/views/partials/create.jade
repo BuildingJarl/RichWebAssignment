@@ -1,25 +1,34 @@
-input(placeholder="Whats your polls title?" ng-model="poll.title" type="text" size="60")
-br
-textarea(placeholder="Enter some details about the poll" ng-model="poll.info" rows="6" cols="50")
-br
-|Options : 
-input(ng-model="optionInput")
-button(ng-click="addOption()") Add
+div(ng-show="session.isLoggedIn")
+	div
+		| Create Poll
 
-ul
-	li(ng-repeat="option in poll.options" )
-		span(style="width:150px; display:inline-block;")
-			{{ option }}
-		i(class="fa fa-eraser" style="cursor:pointer;" ng-click="removeOption($index)")
-
-| Preview
-div(style="border:1px dotted white;")
-	h1 {{ poll.title }}
-	{{ poll.info }}
+	hr
+	input(placeholder="Whats your polls title?" ng-model="poll.title" type="text"  style="font-size: 1em; border:none; background-color:whitesmoke; height: 30px; padding:5px; width:300px;")
 	br
 	br
-	button(ng-repeat="option in poll.options") {{ option }}
+	textarea(placeholder="Enter some details about the poll" ng-model="poll.info" style="border:none; background-color:whitesmoke; font-size: 1em; font-family: inherit; font-size: inherit; width:600px; height:300px; padding:5px;")
+	br
+	div.answerSectionContainer 
+		div.addAnswerButton	
+			button(ng-click="addAnswer()") Add new anwser
+
+		div.answerContainer(ng-repeat="anwser in poll.answers")
+			input.answerInput(ng-model="anwser.answer" placeholder="Insert answer")
+			i(class="fa fa-eraser" style="cursor:pointer;" ng-click="removeAnswer($index)")
 
 
 
-button(ng-click="createPoll()") Create Poll
+	| Preview
+	div(style="border:1px dotted black;")
+		h1 {{ poll.title }}
+		{{ poll.info }}
+		br
+		br
+		button(ng-repeat="answer in poll.answers") {{ answer.answer }}
+
+
+
+	button(ng-click="createPoll()") Create Poll
+
+div(ng-hide="session.isLoggedIn")
+	| In order to create a poll you have to log in or sign up

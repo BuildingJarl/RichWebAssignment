@@ -26,7 +26,15 @@ app.factory('sessionService', ['$rootScope', '$window', '$http',
 				});
 			},
 			authSuccess: function(userData) {
-				this.currentUser = userData;
+				
+				var self = this;
+
+				//this.currentUser = userData;
+
+				$http.get('/api/getUser',{user:userData}).success(function (data) {
+					self.currentUser = data;
+				});
+
 				this.isLoggedIn = true;
 				$rootScope.$emit('session-changed');
 			},

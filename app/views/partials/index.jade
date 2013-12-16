@@ -1,18 +1,27 @@
-| this is the index view should display various polls
 
-| Newest polls
-br
-br
-div.pollsContainer(ng-repeat="poll in polls" ng-click="{{poll._id}}")
-	div(style="width:100px; float:left;")
-		div
-			| votes {{ poll.votes}}
-		div
-			| views {{ poll.views}}
-	div(style="width:500px; float:right;")
-		div
+div
+	| Newest Polls
+
+hr
+
+
+
+div.pollsContainer(ng-repeat="poll in polls" ng-click="{{ poll._id }}")
+	div.statsContainer
+		div.arrow
+		div.stats
+			div.votes
+				strong {{ poll.votes }}
+				br
+				| votes
+			div.views
+				strong {{ poll.views }}
+				br
+				| views	
+	div.summaryContainer
+		div.title
 			a(ui-sref='poll({pollid:poll._id})') {{ poll.title }}
-		div
+		div.shortSum
 			{{ poll.info }}
 
 

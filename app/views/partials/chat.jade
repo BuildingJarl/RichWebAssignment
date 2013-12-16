@@ -1,0 +1,14 @@
+|Chat
+hr
+
+div.messageContainer
+	div(ng-repeat="mes in messages" style="margin:1px; border-bottom:1px dotted #000066;") 
+		span 
+			strong 
+				{{ mes.username }}:
+		span
+			{{ mes.message }}
+
+div.messageInputContainer
+	input(ng-model="messageInput" placeholder="Type your message")
+	button(ng-click="sendMessage()") Send

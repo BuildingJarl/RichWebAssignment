@@ -3,48 +3,83 @@ app.controller('indexController', ['$rootScope','$scope','$http', '$state', func
 	$scope.polls = [];
 
 	$http.get('/api/getIndexPolls').success(function(data){
-			$scope.polls = data;
+		$scope.polls = data;
 	});
 
 }]);
 
 app.controller('createController', ['$rootScope','$scope','$http', '$state', function($rootScope,$scope, $http, $state) {
 
-	$scope.optionInput = "";
-
 	$scope.poll = {
 		title: "",
 		info: "",
-		options: ["Yes","No"]
+		answers: [{answer:"yes"},{answer:"no"}]
 	};
 
-	$scope.addOption = function () {
-		if($scope.optionInput.length > 1 && $scope.optionInput !== "") {
-			$scope.poll.options.push($scope.optionInput);
+	$scope.addAnswer = function () {
+		if($scope.poll.answers.length < 6) {
+			$scope.poll.answers.push({answer:""});
 		}
 	};
-
-	$scope.editOption = function() {
-
-	}
-
-	$scope.removeOption = function(index) {
-		$scope.poll.options.splice(index,1)
-	}
-
+	$scope.removeAnswer = function(index) {
+		$scope.poll.answers.splice(index,1)
+	};
 
 	$scope.createPoll = function () {
 		//send to server to parse and insert into database
 		$http.post('/api/createPoll',$scope.poll).success( function (data) {
-			$state.go('poll', { pollid: data });
+			$state.go('poll', { pollid: data.pollid });
 		});
 	};
 
 }]);
 
+app.controller('pollsController', ['$rootScope','$scope','$http', '$state', '$stateParams', function($rootScope,$scope, $http, $state, $stateParams) {
+
+	$scope.polls = [];
+	$http.get('/api/getPolls').success(function(data){
+		$scope.polls = data;
+	});
+
+}]);
 
 app.controller('singlePollController', ['$rootScope','$scope','$http', '$state', '$stateParams', function($rootScope,$scope, $http, $state, $stateParams) {
+	$scope.poll = {};
+	$http.post('/api/getSinglePoll',{pollid: $stateParams.pollid}).success(function(data) {
+		$scope.poll = data;
+	});
 
-	console.log($stateParams.pollid);
-	//get all poll details from db
+	$scope.anwserPoll = function (an) {
+
+		$http.put('/api/voteOnPoll/' + $stateParams.pollid, { vote: an })
+		.success(function (data){
+			console.log(data);
+		});
+	}
+
+}]);
+
+app.controller('chatController', ['$rootScope','$scope','$http', '$state', '$stateParams', function($rootScope,$scope, $http, $state, $stateParams) {
+	var socket = io.connect();
+	$scope.messages = [];
+	var username = "guest";
+	$scope.messageInput = "";
+
+	if($rootScope.session.isLoggedIn) {
+		username = $rootScope.session.currentUser.username;
+	}
+
+	socket.on('message', function (data) {
+		if(data) {
+			$scope.$apply($scope.messages.push(data));
+			
+			console.log($scope.messages);
+		}
+	});
+	
+	$scope.sendMessage = function() {
+		socket.emit('sendmessage', {username: username, message: $scope.messageInput});
+		$scope.messageInput = "";	
+	};
+
 }]);

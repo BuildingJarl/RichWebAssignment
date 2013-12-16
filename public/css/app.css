@@ -1,8 +1,8 @@
 html {
 	font-size: 1em;
-	font-family: "Lucida Console", Monaco, monospace;
-	color: white;
-	background-color: #272822;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #000033;
+	background-color: white;
 
 }
 
@@ -14,7 +14,7 @@ body {
 .topbar {
 	width:100%;
 	height: 30px;
-	background-color: blue;
+	background-color: #000000;
 }
 
 .horizonalList {
@@ -49,26 +49,118 @@ body {
 	margin-top: 20px;
 }
 
+.menubarContainer ul {
+	list-style: none;
+	float:right;
+}
+.menubarContainer ul li{
+	display: inline;
+	margin-left: 10px;
+	background-color: whitesmoke;
+	padding:5px;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 1px solid whitesmoke;
+}
+.menubarContainer ul li :hover{
+
+	background-color: #FFFF99;
+}
+.menubarContainer ul li a{
+	text-decoration: none;
+	color: black;
+	width: 100%;
+	height: 100%;
+}
+
 .uiViewContainer {
 	width:900px;
 	margin-right: auto;
 	margin-left: auto;
 }
 
-
+/* polls */
 .pollsContainer {
-	width:600px;
+	width:700px;
 	height: 100px;
+	margin-bottom: 5px;
 	overflow: hidden;
-	margin-bottom: 50px;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 1px solid whitesmoke;
+	padding: 5px;
+}
+.statsContainer {
+	width: 90px;
+	height:100px;
+	float:left;
+	display: inline-block;
+}
+.arrow {
+	width: 0; 
+	height: 0; 
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid whitesmoke;
+	float:right;
+	margin-top: 12px;
+}
+.stats {
+	width: 80px;
+	text-align: center;
+	background-color: whitesmoke;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 0px solid #000000;
+}
+.summaryContainer {
+	width: 600px;
+	margin-left: 10px;
+	float: left;
+}
+.title {
+	font-size: 1.1em;
+	margin-bottom: 10px;
+}
+.title a{
+	text-decoration: none;
+	color:#000066;
+}
+.shortSum {
+	overflow: hidden;
+}
+/* polls end*/
+
+/* create page */
+.answerSectionContainer {
+	width:600px;
+	background-color: whitesmoke;
+	padding:5px;
+	margin-bottom: 5px;
+	margin-top: 15px;
+}
+.answerContainer {
+	height: 30px;
+	width: 200px;
+	line-height: 30px;
+	background-color: whitesmoke;
+	border: 1px solid black;
+}
+.answerInput {
+	border:none;
+	font-family: inherit;
+	font-size: inherit;
+	background-color: inherit;
+
+}
+.addAnswerButton {
+
 }
 
-
-
-
-
-
-
+/* create page end */
 
 
 
@@ -76,7 +168,7 @@ body {
 	width:600px; 
 	margin-left:auto; 
 	margin-right:auto; 
-	margin-top:20%; 
+	margin-top:10px; 
 	text-align:center;
 }
 
@@ -90,12 +182,13 @@ body {
 	vertical-align: middle;
 	margin-right: 10px;
 	margin-left: 10px;
+	cursor: pointer;
 }
 
 
 
 .loginButtonsTop {
-	background-color: red; 
+	background-color: #006699; 
 	border-radius: 20px 20px 20px 20px;
 	-moz-border-radius: 20px 20px 20px 20px;
 	-webkit-border-radius: 20px 20px 20px 20px;
@@ -107,4 +200,34 @@ body {
 }
 .loginButtonsTop:hover {
 	background-color: #980000;
+}
+
+
+.messageContainer {
+	height: 300px;
+	background-color: whitesmoke;
+	overflow-y:scroll;
+}
+.messageContainer ul{
+	list-style: none;
+}
+
+.messageInputContainer {
+	min-height: 100px;
+	margin-top: 10px;
+}
+
+.messageInputContainer input {
+	height: 30px;
+	width: 500px;
+	background-color: whitesmoke;
+	font-size: inherit;
+	font-style: inherit;
+	border: 1px solid #CCFF00;
+}
+
+.messageInputContainer button {
+	height: 40px;
+	width: 50px;
+
 }

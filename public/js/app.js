@@ -26,19 +26,30 @@ app.config([ '$stateProvider', '$urlRouterProvider', function ($stateProvider, $
 		.state('poll', {
 			url:'/poll/:pollid',
 			templateUrl:'/partials/poll',
+			onEnter: function($stateParams,$http) {
+				console.log($stateParams.pollid);
+				$http.put('/api/viewPoll/' + $stateParams.pollid)
+					.success(function (data) {
+				});
+			},
 			controller:'singlePollController'
 		})
 		.state('create', {
 			url:'/create',
 			templateUrl:'/partials/create',
 			controller:'createController'
+		})
+		.state('chat', {
+			url:'/chat',
+			templateUrl: '/partials/chat',
+			controller: 'chatController'
 		});
 
 }]);
 
 
-app.run(['$rootScope', '$window','sessionService', function ($rootScope, $window,sessionService) {
-	//attatch session service to rootscope
+app.run(['$rootScope', '$window','sessionService', '$state', function ($rootScope, $window, sessionService, $state) {
+	//attatch session service to rootscope 
 	$rootScope.session = sessionService;
 
 	$window.app = {
@@ -57,6 +68,10 @@ app.run(['$rootScope', '$window','sessionService', function ($rootScope, $window
 			});
 		}
 	};
+
+	$rootScope.$on('session-changed', function() {
+		$state.go('index');
+	});
 }]);
 
 

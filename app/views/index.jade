@@ -3,8 +3,6 @@ extends layout
 block body
 	div.topbar
 		div.topbarItemsContainer
-			div(style="float:left;")
-				a(ui-sref='index',href="#/") Pollnoid
 			div(style="float:right;")
 				ul.horizonalList(ng-hide="session.isLoggedIn")
 					li 
@@ -12,20 +10,26 @@ block body
 					li 
 						a(ui-sref='login') log in
 				ul.horizonalList(ng-show="session.isLoggedIn")
-					li
-						{{ session.currentUser }}
+					li(style="color:white;")
+						{{ session.currentUser.username }}
 					li
 						a(ui-sref='login' ng-click="session.logout()") log out
 
 	div.menubarContainer
-		div(style="float:left;")
-			a(ui-sref='index') Pollnoid
-		div
-			ul.horizonalList
-				li 
-					a(ui-sref='polls') Polls
-				li 
-					a(ui-sref='create') Create Poll
+		img(src="/img/pollnoid.png" width="400" height="150" ui-sref='index' style="cursor:pointer;");
+		ul
+			li 
+				a(ui-sref='chat') 
+					strong 
+						| Chat
+			li 
+				a(ui-sref='polls') 
+					strong 
+						| Polls
+			li 
+				a(ui-sref='create') 
+					strong
+						| Create Poll
 
 
 
@@ -33,3 +37,6 @@ block body
 	div(ui-view class="uiViewContainer")
 
 
+	footer(style="width:100%;  bottom:0; position:absolute;")
+		div(style="width:100%; height:20px; background-color:black;")
+		div(style="width:100%; height:150px; background-color:#999999;")

@@ -1,1 +1,22 @@
-| THis is a single poll view. details and the ability to vot should be displayed here
+
+
+hr
+
+h1 {{ poll.title }}
+
+hr
+
+{{ poll.info }}
+
+div(style="margin-top:10px;")
+	| Results
+	div(ng-repeat="(key,value) in poll.answers")
+		| {{ key }} : {{ value }}
+
+
+div(style="margin-top: 10px; margin-botton:20px; height:50px;")
+
+div(ng-show="session.isLoggedIn")
+	button(ng-repeat="(key,value) in poll.answers" ng-click="anwserPoll(key)" ) {{ key }}
+div(ng-hide="session.isLoggedIn")
+	| Please log in to cast a vote

@@ -27,34 +27,40 @@ module.exports.controller = function (app,db) {
 	app.get('/partials/poll', function (request, response) {
 		response.render("partials/poll");
 	});
+	app.get('/partials/chat', function (request, response) {
+		response.render("partials/chat");
+	});
+
+
 
 
 	app.get('/api/getUser' ,isAuthenticated,function (request, response) {
-		db.database.collection('data').findOne({ _id: new BSON.ObjectID(request.user)}, function(err,user) {
+
+		console.log(request.user);
+
+		db.collection('Users').findOne({ _id: new BSON.ObjectID(request.user)}, function(err,userDetails) {
 			if(err) {
 				console.log("error retriveing user from database");
 			}
-			delete user.facebookId;
-			delete user._id;
-			response.json(user);
+			response.json(userDetails);
 		});
 	});
 
 	//Create a poll
 	app.post('/api/createPoll', function (request,response) {
 
-		var options = {};
-		for(op in request.body.options) {
-			options[request.body.options[op]] = 0;
+		var answers = {};
+		for(an in request.body.answers) {
+			answers[request.body.answers[an].answer] = 0;
 		}
 		//to do creat model for this
 		var poll = {
 			title: request.body.title,
 			info: request.body.info,
-			options: options,
+			answers: answers,
 			views: 0,
 			votes: 0,
-			dateCreated = Date.now();
+			dateCreated: Date.now()
 		} 
 
 		db.collection('polls').insert(poll, function (err, result) {
@@ -62,7 +68,8 @@ module.exports.controller = function (app,db) {
 				throw err;
 			}
 			if(result) {
-				response.send(result[0]._id);
+
+				response.send({ pollid: result[0]._id });
 			}
 		});
 	});
@@ -80,6 +87,74 @@ module.exports.controller = function (app,db) {
 		});
 	});
 
+	app.get('/api/getPolls', function (request,response) {
+
+		db.collection('polls').find().limit(10).toArray(function(err, result) {
+			if(err){
+				throw err;
+			}
+			if(result) {
+				response.send(result);
+			}
+		});
+	});
+
+	app.post('/api/getSinglePoll', function (request, response) {
+
+		db.collection('polls').findOne({ _id: new BSON.ObjectID(request.body.pollid)}, function(err,poll) {
+			if(err) {
+				console.log("error retriveing poll from database");
+			}
+			response.json(poll);
+		});
+	});
+
+	app.put('/api/voteOnPoll/:pollid', function (request, response) {
+
+		var action = {};
+		action['answers.' + request.body.vote] = 1;
+		var id = new BSON.ObjectID(request.params.pollid);
+
+		//update total votes on poll
+		db.collection('polls').update({_id: id}, {$inc:{votes: 1}},
+			function(err, result) {
+				if(err) {
+					console.log(err);
+				}
+				if(result) {
+					response.send(result);
+				}
+			});
+
+
+		// update votes on selected answer
+		db.collection('polls').update({_id: id}, {$inc: action },
+			function(err, result) {
+				if(err) {
+					console.log(err);
+				}
+				if(result) {
+					console.log(result);
+				}
+			});
+		
+	});
+
+	app.put('/api/viewPoll/:pollid', function (request, response) {
+		var id = new BSON.ObjectID(request.params.pollid);
+
+		//update total views on poll
+		db.collection('polls').update({_id: id}, {$inc:{views: 1}},
+			function(err, result) {
+				if(err) {
+					console.log(err);
+				}
+				if(result) {
+					response.send(result);
+				}
+			});
+	});
+	
 	// Simple route middleware to ensure user is authenticated.
 	function isAuthenticated(req, res, next) {
 	  if (req.user) { 

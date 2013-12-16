@@ -8,7 +8,7 @@ var User = (function() {
 		this.createdAt = Date.now();
 		this.username = uname;
 		this.votesCast = [];
-		this.polledViewed = [];
+		this.pollsViewed = [];
 	};
 
 	return User;

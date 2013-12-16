@@ -1,0 +1,22 @@
+div
+	| All Polls
+
+hr
+
+div.pollsContainer(ng-repeat="poll in polls" ng-click="{{ poll._id }}")
+	div.statsContainer
+		div.arrow
+		div.stats
+			div.votes
+				strong {{ poll.votes }}
+				br
+				| votes
+			div.views
+				strong {{ poll.views }}
+				br
+				| views	
+	div.summaryContainer
+		div.title
+			a(ui-sref='poll({pollid:poll._id})') {{ poll.title }}
+		div.shortSum
+			{{ poll.info }}
