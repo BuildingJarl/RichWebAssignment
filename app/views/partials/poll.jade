@@ -5,18 +5,37 @@ hr
 h1 {{ poll.title }}
 
 hr
+div(style="background-color: whitesmoke; padding: 5px;")
+	{{ poll.info }}
 
-{{ poll.info }}
-
-div(style="margin-top:10px;")
+div(style="margin-top:30px;background-color: whitesmoke; padding: 5px;")
 	| Results
+
+	div(style="margin-left:20px;")
+		canvas#resultChart
+
 	div(ng-repeat="(key,value) in poll.answers")
 		| {{ key }} : {{ value }}
 
 
-div(style="margin-top: 10px; margin-botton:20px; height:50px;")
+div(style="margin-top: 10px; margin-botton:20px; height:20px;")
 
 div(ng-show="session.isLoggedIn")
-	button(ng-repeat="(key,value) in poll.answers" ng-click="anwserPoll(key)" ) {{ key }}
+
+	button(style="margin-right:10px;" class="pure-button pure-button-active" ng-repeat="(key,value) in poll.answers" ng-click="anwserPoll(key)" ) {{ key }}
+	br 
+	{{ voteStatus }}
+
 div(ng-hide="session.isLoggedIn")
 	| Please log in to cast a vote
+
+div(class="pollComment Section" class="commentContainer")
+	div(ng-repeat="comment in comments" class="comment")
+		span(style="display:block;") 
+		strong
+			{{ comment.username }} says:
+		span(style="display:block; margin-top:10px; margin-left:10px; margin-bottom:5px;") {{ comment.comment }}
+
+	div(class="commentInput")
+		input(ng-model="commentInput")
+		button(class="pure-button pure-button-active" ng-click="addComment()") Comment

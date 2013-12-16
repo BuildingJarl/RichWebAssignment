@@ -10,7 +10,7 @@ div(ng-show="session.isLoggedIn")
 	br
 	div.answerSectionContainer 
 		div.addAnswerButton	
-			button(ng-click="addAnswer()") Add new anwser
+			button(class="pure-button" ng-click="addAnswer()") Add new answer
 
 		div.answerContainer(ng-repeat="anwser in poll.answers")
 			input.answerInput(ng-model="anwser.answer" placeholder="Insert answer")
@@ -24,11 +24,11 @@ div(ng-show="session.isLoggedIn")
 		{{ poll.info }}
 		br
 		br
-		button(ng-repeat="answer in poll.answers") {{ answer.answer }}
+		button(class="pure-button" ng-repeat="answer in poll.answers") {{ answer.answer }}
 
 
 
-	button(ng-click="createPoll()") Create Poll
+	button(class="pure-button pure-button-active" ng-click="createPoll()") Create Poll
 
 div(ng-hide="session.isLoggedIn")
 	| In order to create a poll you have to log in or sign up

@@ -109,35 +109,40 @@ module.exports.controller = function (app,db) {
 		});
 	});
 
-	app.put('/api/voteOnPoll/:pollid', function (request, response) {
+	app.put('/api/voteOnPoll/:pollid',isAuthenticated, function (request, response) {
 
 		var action = {};
 		action['answers.' + request.body.vote] = 1;
 		var id = new BSON.ObjectID(request.params.pollid);
+		var userID = request.user
+		var pollID = request.params.pollid;
 
-		//update total votes on poll
-		db.collection('polls').update({_id: id}, {$inc:{votes: 1}},
-			function(err, result) {
-				if(err) {
-					console.log(err);
-				}
-				if(result) {
-					response.send(result);
-				}
-			});
+		db.collection('Users').findOne({ _id: new BSON.ObjectID(userID)}, function(err,userDetails) {
+			
+			if(userDetails.votesCast.indexOf(pollID) === -1) {
+				console.log("User has not voted on this poll yet");
 
+				//update total votes on poll
+				db.collection('polls').update({_id: id}, {$inc:{votes: 1}}, function(err, result) {
+				});
 
-		// update votes on selected answer
-		db.collection('polls').update({_id: id}, {$inc: action },
-			function(err, result) {
-				if(err) {
-					console.log(err);
-				}
-				if(result) {
-					console.log(result);
-				}
-			});
-		
+				// update votes on selected answer
+				db.collection('polls').update({_id: id}, {$inc: action },function(err, result) {
+				});
+
+				//Add poll to users voted list
+				db.collection('Users').update({_id:  new BSON.ObjectID(userID)}, {$push: {votesCast: pollID}}, function(err, result) {
+					if(err) {
+						console.log(err);
+					}
+				});
+
+				response.send({status:"Thank you for voting"});
+			} else {
+				console.log("User has already voted on this poll");
+				response.send({status:"Sorry you have already voted on this poll"});
+			}
+		});
 	});
 
 	app.put('/api/viewPoll/:pollid', function (request, response) {
@@ -153,6 +158,34 @@ module.exports.controller = function (app,db) {
 					response.send(result);
 				}
 			});
+	});
+
+	app.post('/api/getComments', function (request, response) {
+
+		db.collection('comments').find({pollid:request.body.pollid }).limit(10).toArray(function(err, result) {
+			if(err){
+				throw err;
+			}
+			if(result) {
+				response.send(result);
+			}
+		});
+
+	});
+
+	app.post('/api/addComment', function (request, response) {
+		var comment = {
+			pollid: request.body.pollid,
+			comment: request.body.comment,
+			username: request.body.username
+		};
+
+		db.collection('comments').insert(comment, function(err,result){
+
+			if(result) {
+				response.send(result);
+			}
+		});
 	});
 	
 	// Simple route middleware to ensure user is authenticated.

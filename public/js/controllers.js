@@ -13,7 +13,7 @@ app.controller('createController', ['$rootScope','$scope','$http', '$state', fun
 	$scope.poll = {
 		title: "",
 		info: "",
-		answers: [{answer:"yes"},{answer:"no"}]
+		answers: [{answer:"Yes"},{answer:"No"}]
 	};
 
 	$scope.addAnswer = function () {
@@ -45,17 +45,57 @@ app.controller('pollsController', ['$rootScope','$scope','$http', '$state', '$st
 
 app.controller('singlePollController', ['$rootScope','$scope','$http', '$state', '$stateParams', function($rootScope,$scope, $http, $state, $stateParams) {
 	$scope.poll = {};
-	$http.post('/api/getSinglePoll',{pollid: $stateParams.pollid}).success(function(data) {
+	$scope.comments = [];
+	$scope.commentInput = "";
+	var username = 'guest';
+	if($rootScope.session.currentUser !== null) {
+		username = $rootScope.session.currentUser.username; 
+	}
+
+	var colors = ['#006633','#3366CC', '#33FF66', '#669933' , '#993366', '#99CC99'];
+
+	$http.post('/api/getSinglePoll',{ pollid: $stateParams.pollid}).success(function(data) {
 		$scope.poll = data;
+		$scope.voteStatus = "";
+		//This should be in a directive but due to time limitations its here
+		var data = [];
+		var i = 0;
+		for(answ in $scope.poll.answers) {
+			
+			console.log($scope.poll.answers[answ]);
+			var temp = {
+				label: answ,
+				value: $scope.poll.answers[answ],
+				color:  colors[i]
+			};
+			i++;
+			data.push(temp);
+		}
+
+		var ctx = document.getElementById("resultChart").getContext("2d");
+		var myNewChart = new Chart(ctx).Pie(data);
+
+	});
+
+	$http.post('/api/getComments', { pollid: $stateParams.pollid}).success(function(data) {
+		console.log(data);
+		$scope.comments = data;
 	});
 
 	$scope.anwserPoll = function (an) {
 
 		$http.put('/api/voteOnPoll/' + $stateParams.pollid, { vote: an })
 		.success(function (data){
-			console.log(data);
+			$scope.voteStatus = data.status;
 		});
-	}
+	};
+
+	$scope.addComment = function() {
+		$http.post('/api/addComment', { username: username, pollid: $stateParams.pollid, comment: $scope.commentInput }).success(function(data) {
+			$scope.commentInput = "";
+			$scope.comments.push(data[0]);
+		});
+	};
 
 }]);
 
@@ -78,8 +118,11 @@ app.controller('chatController', ['$rootScope','$scope','$http', '$state', '$sta
 	});
 	
 	$scope.sendMessage = function() {
-		socket.emit('sendmessage', {username: username, message: $scope.messageInput});
-		$scope.messageInput = "";	
+		if($scope.messageInput != "" || $scope.messageInput.length > 1)
+		{
+			socket.emit('sendmessage', {username: username, message: $scope.messageInput});
+			$scope.messageInput = "";	
+		}
 	};
 
 }]);

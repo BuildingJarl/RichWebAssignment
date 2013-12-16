@@ -76,6 +76,7 @@ body {
 
 .uiViewContainer {
 	width:900px;
+	height:100%;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -226,8 +227,21 @@ body {
 	border: 1px solid #CCFF00;
 }
 
-.messageInputContainer button {
-	height: 40px;
-	width: 50px;
+.commentContainer {
+	margin-top: 40px;
+	
+}
+.comment {
+	padding-bottom: 5px;
+	background-color: whitesmoke;
+	margin-top:5px;
+	margin-bottom: 5px;
+}
+.commentInput {
 
+}
+
+.commentInput input{
+	width: 600px;
+	height:30px;
 }
